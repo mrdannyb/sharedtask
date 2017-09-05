@@ -1,3 +1,5 @@
+var ravens = ["danny","miyuki","tescia","nauhi","mel","lorrie","donkey","lala","naomi","chris","maya"]
+
 $(document).ready(function(){
 
   var config = {
@@ -19,7 +21,7 @@ $(document).ready(function(){
     if (newTask != ""){
       database.ref("onTheDocket").push({
         task: newTask,
-        added: m.format("DD/MM/YY"),
+        added: m.format("MMM Do YYYY"),
         rating: 0,
       });
     }
@@ -60,25 +62,36 @@ $(document).ready(function(){
     doneBtn.attr("value", taskId);
     doneBtn.html("Done");
     doneBtn.addClass("doneBtn");
+    doneBtn.addClass("divBtn");
 
     var deleteBtn = $("<button>");
     deleteBtn.attr("value", taskId);
     deleteBtn.html("X");
     deleteBtn.addClass("delBtn")
+    deleteBtn.addClass("divBtn");
+
 
     var rateupBtn = $("<button>");
     rateupBtn.attr("value", taskId);
     rateupBtn.html("+");
+    rateupBtn.addClass("divBtn");
 
     var ratedownBtn = $("<button>");
     ratedownBtn.attr("value", taskId);
     ratedownBtn.html("-");
+    ratedownBtn.addClass("divBtn");
+
+    var dateSpan = $("<span>");
+    dateSpan.html(sv.added);
+    dateSpan.addClass("text-info");
 
     taskDiv.html(sv.task);
     taskDiv.prepend(doneBtn);
     taskDiv.append(deleteBtn);
     taskDiv.append(rateupBtn);
     taskDiv.append(ratedownBtn);
+    taskDiv.append(dateSpan);
+
 
     $("#task-view").append(taskDiv);
   });
