@@ -16,12 +16,13 @@ $(document).ready(function(){
     event.preventDefault();
     var m = moment();
     var newTask = $("#new-task").val().trim();
-
-    database.ref("/onTheDocket").push({
-      task: newTask,
-      added: m.format("DD/MM/YY"),
-      rating: 0,
-    });
+    if (newTask != ""){
+      database.ref("onTheDocket").push({
+        task: newTask,
+        added: m.format("DD/MM/YY"),
+        rating: 0,
+      });
+    }
 
     $("#new-task").val("");
   });
@@ -47,20 +48,23 @@ $(document).ready(function(){
   });
 */
 
-  database.ref("/onTheDocket").on("child_added", function(snapshot){
+  database.ref("onTheDocket").on("child_added", function(snapshot){
     var sv = snapshot.val();
     var taskId = snapshot.key;
 
     var taskDiv = $("<div>");
     taskDiv.attr("id", taskId);
+    taskDiv.addClass("container");
 
     var doneBtn = $("<button>");
     doneBtn.attr("value", taskId);
     doneBtn.html("Done");
+    doneBtn.addClass("doneBtn");
 
     var deleteBtn = $("<button>");
     deleteBtn.attr("value", taskId);
     deleteBtn.html("X");
+    deleteBtn.addClass("delBtn")
 
     var rateupBtn = $("<button>");
     rateupBtn.attr("value", taskId);
@@ -74,10 +78,34 @@ $(document).ready(function(){
     taskDiv.prepend(doneBtn);
     taskDiv.append(deleteBtn);
     taskDiv.append(rateupBtn);
+    taskDiv.append(ratedownBtn);
 
     $("#task-view").append(taskDiv);
-  })
-})
+  });
+
+  $(document).on("click", ".delBtn", function(){
+    var delId = $(this).attr("value");
+    database.ref("onTheDocket/" + delId).once("value", function(snap){
+      var sv = snap.val();
+      database.ref("trashedTasks").push(sv);
+      database.ref("onTheDocket").child(delId).remove();
+      $("#" + delId).remove();
+    });
+  });
+
+
+  $(document).on("click", ".doneBtn", function(){
+    var doneId = $(this).attr("value");
+    database.ref("onTheDocket/" + doneId).once("value", function(snap){
+      var sv = snap.val();
+      database.ref("completedTasks").push(sv);
+      database.ref("onTheDocket").child(doneId).remove();
+      $("#" + doneId).remove();
+    });
+  });
+});
+
+
 
 /*<div class="btn-group">
   <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
