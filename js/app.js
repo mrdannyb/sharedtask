@@ -5,10 +5,9 @@ $(document).ready(function(){
     authDomain: "shared-tasklist.firebaseapp.com",
     databaseURL: "https://shared-tasklist.firebaseio.com",
     projectId: "shared-tasklist",
-    storageBucket: "",
+    storageBucket: "shared-tasklist.appspot.com",
     messagingSenderId: "655754054371"
   };
-
   firebase.initializeApp(config);
 
   var database = firebase.database();
@@ -25,37 +24,58 @@ $(document).ready(function(){
     });
 
     $("#new-task").val("");
-  })
+  });
+
+ /* $("register")
+  firebase.auth().createUserWithEmailAndPassword(email, password).catch(function (error) {
+    var errorCode = error.code;
+    var errorMessage = error.message;
+  });
+
+  firebase.auth().signInWithEmailAndPassword(email, password).catch(function(error) {
+    var errorCode = error.code;
+    var errorMessage = error.message;
+  });
+
+  firebase.auth().signOut().catch(function(error) {
+    var errorCode = error.code;
+    var errorMessage = error.message;
+  });
+
+  firebase.auth().onAuthStateChanged(function(user) {
+    window.user = user;  
+  });
+*/
 
   database.ref("/onTheDocket").on("child_added", function(snapshot){
-      var sv = snapshot.val();
-      var taskId = snapshot.key;
+    var sv = snapshot.val();
+    var taskId = snapshot.key;
 
-      var taskDiv = $("<div>");
-      taskDiv.attr("id", taskId);
+    var taskDiv = $("<div>");
+    taskDiv.attr("id", taskId);
 
-      var doneBtn = $("<button>");
-      doneBtn.attr("value", taskId);
-      doneBtn.html("Done");
+    var doneBtn = $("<button>");
+    doneBtn.attr("value", taskId);
+    doneBtn.html("Done");
 
-      var deleteBtn = $("<button>");
-      deleteBtn.attr("value", taskId);
-      deleteBtn.html("X");
+    var deleteBtn = $("<button>");
+    deleteBtn.attr("value", taskId);
+    deleteBtn.html("X");
 
-      var rateupBtn = $("<button>");
-      rateupBtn.attr("value", taskId);
-      rateupBtn.html("+");
+    var rateupBtn = $("<button>");
+    rateupBtn.attr("value", taskId);
+    rateupBtn.html("+");
 
-      var ratedownBtn = $("<button>");
-      ratedownBtn.attr("value", taskId);
-      ratedownBtn.html("-");
+    var ratedownBtn = $("<button>");
+    ratedownBtn.attr("value", taskId);
+    ratedownBtn.html("-");
 
-      taskDiv.html(sv.task);
-      taskDiv.prepend(doneBtn);
-      taskDiv.append(deleteBtn);
-      taskDiv.append(rateupBtn);
+    taskDiv.html(sv.task);
+    taskDiv.prepend(doneBtn);
+    taskDiv.append(deleteBtn);
+    taskDiv.append(rateupBtn);
 
-      $("#task-view").append(taskDiv);
+    $("#task-view").append(taskDiv);
   })
 })
 
