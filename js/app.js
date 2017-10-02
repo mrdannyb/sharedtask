@@ -56,30 +56,30 @@ $(document).ready(function(){
 
     var taskDiv = $("<div>");
     taskDiv.attr("id", taskId);
-    taskDiv.addClass("container");
+    taskDiv.addClass("container-fluid bg-faded task");
 
     var doneBtn = $("<button>");
     doneBtn.attr("value", taskId);
     doneBtn.html("Done");
-    doneBtn.addClass("doneBtn");
-    doneBtn.addClass("divBtn");
+    doneBtn.addClass("doneBtn divBtn btn btn-success");
 
     var deleteBtn = $("<button>");
     deleteBtn.attr("value", taskId);
     deleteBtn.html("X");
-    deleteBtn.addClass("delBtn")
-    deleteBtn.addClass("divBtn");
-
+    deleteBtn.addClass("delBtn divBtn btn btn-danger")
 
     var rateupBtn = $("<button>");
     rateupBtn.attr("value", taskId);
+    rateupBtn.attr("data-rate", 1);
+    rateupBtn.addClass("divBtn rate btn btn-info");
     rateupBtn.html("+");
-    rateupBtn.addClass("divBtn");
+
 
     var ratedownBtn = $("<button>");
     ratedownBtn.attr("value", taskId);
     ratedownBtn.html("-");
-    ratedownBtn.addClass("divBtn");
+    ratedownBtn.attr("data-rate",-1);
+    ratedownBtn.addClass("divBtn rate btn btn-warning");
 
     var dateSpan = $("<span>");
     dateSpan.html(sv.added);
@@ -116,6 +116,8 @@ $(document).ready(function(){
       $("#" + doneId).remove();
     });
   });
+
+
 });
 
 
